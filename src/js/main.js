@@ -8,8 +8,9 @@ class Equalizr {
         this.scene
         this.camera
         this.renderer
+        this.sphere
         this.guiControls
-        this.soundData = sound.getData()
+        this.sound = sound
         this.innerWidth = window.innerWidth
         this.innerHeight = window.innerHeight
         this.container = document.getElementById( 'canvas' )
@@ -27,9 +28,10 @@ class Equalizr {
         // this.camera.lookAt( new THREE.Vector3( 0, 0, 0 ) )
 
         this.renderer = new THREE.WebGLRenderer()
-        this.renderer.setClearColor( 0xffffff, 1 )
         this.renderer.setSize( this.innerWidth, this.innerHeight )
-        this.renderer.autoClear = false
+        this.renderer.setClearColor( 0xc0392b )
+
+        this.renderer.clear();
         this.container.appendChild( this.renderer.domElement )
 
         this.createScene()
@@ -38,16 +40,19 @@ class Equalizr {
         this.resize()
         window.addEventListener( 'resize', this.resize.bind( this ), false )
 
-        this.animate()
+        this.sound.load( 'assets/sound/example.mp3' )
+        this.sound.on( 'start', () => {
+            this.animate()
+        })
     }
 
     createScene() {
         let sphereGeometry = new THREE.SphereGeometry( 10, 32, 32 )
-        let sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } )
-        let sphere = new THREE.Mesh( sphereGeometry, sphereMaterial )
-        this.scene.add( sphere )
+        let sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xecf0f1, wireframe: true } )
+        this.sphere = new THREE.Mesh( sphereGeometry, sphereMaterial )
+        this.scene.add( this.sphere )
 
-        this.camera.lookAt( sphere.position )
+        this.camera.lookAt( this.sphere.position )
     }
 
     initGUI() {
@@ -65,6 +70,9 @@ class Equalizr {
 
     animate() {
         this.render()
+
+        // console.log( this.sound.getData().freq )
+        console.log( this.sound.getData().freq[ 0 ] )
     }
 
     render() {
@@ -72,11 +80,13 @@ class Equalizr {
         this.camera.position.y = this.guiControls.positionY
         this.camera.position.z = this.guiControls.positionZ
 
+        this.sphere.scale.x = this.sound.getData().freq[ 0 ] / 200
+        this.sphere.scale.y = this.sound.getData().freq[ 0 ] / 200
+        this.sphere.scale.z = this.sound.getData().freq[ 0 ] / 200
+
         this.renderer.render( this.scene, this.camera )
 
-        console.log( this.soundData.freq )
-
-        requestAnimationFrame( this.animate.bind(this) )
+        requestAnimationFrame( this.animate.bind( this ) )
     }
 
     resize() {
@@ -90,6 +100,6 @@ class Equalizr {
     }
 }
 
-domready(() => {
+domready( () => {
     let equalizR = new Equalizr()
-});
+} )
