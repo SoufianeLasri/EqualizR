@@ -45,6 +45,9 @@ module.exports = function(grunt) {
                     files:
                     {
                         'tmp/main.js': JAVASCRIPT_DIR + 'main.js',
+                    },
+                    options: {
+                        transform: [ 'babelify' ]
                     }
                 },
 
@@ -53,6 +56,9 @@ module.exports = function(grunt) {
                     files:
                     {
                         'dist/assets/js/main.js': JAVASCRIPT_DIR + 'main.js',
+                    },
+                    options: {
+                        transform: [ 'babelify' ]
                     }
                 }
             },
@@ -158,7 +164,7 @@ module.exports = function(grunt) {
 
                 js:
                 {
-                    files: [ JAVASCRIPT_DIR + '*.js' ],
+                    files: [ JAVASCRIPT_DIR + '**/*.js' ],
                     tasks: [ 'browserify:dev' ]
                 },
 
