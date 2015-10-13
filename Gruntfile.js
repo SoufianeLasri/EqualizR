@@ -10,6 +10,7 @@ module.exports = function(grunt) {
         VENDORS_CSS_DIR = CSS_DIR + 'vendors/',
         FONTS_DIR = STATIC_DIR + 'fonts/',
         IMAGES_DIR = STATIC_DIR + 'images/',
+        SOUND_DIR = STATIC_DIR + 'sound/',
         PUBLISH_DIR = 'dist',
         ASSETS_DIR = PUBLISH_DIR + '/assets';
 
@@ -151,6 +152,17 @@ module.exports = function(grunt) {
                         src: [ '**/*.*' ],
                         dest: ASSETS_DIR + '/images'
                     }]
+                },
+
+                sound:
+                {
+                    files: [
+                    {
+                        expand: true,
+                        cwd: SOUND_DIR,
+                        src: [ '**/*.*' ],
+                        dest: ASSETS_DIR + '/sound'
+                    }]
                 }
 
             },
@@ -196,6 +208,12 @@ module.exports = function(grunt) {
                 {
                     files: [ IMAGES_DIR + '**/*.*' ],
                     tasks: [ 'copy:images' ]
+                },
+
+                sound:
+                {
+                    files: [ SOUND_DIR + '**/*.*' ],
+                    tasks: [ 'copy:sound' ]
                 },
 
                 jade:

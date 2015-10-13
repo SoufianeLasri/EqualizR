@@ -9,6 +9,7 @@ class Equalizr {
         this.camera
         this.renderer
         this.guiControls
+        this.soundData = sound.getData()
         this.innerWidth = window.innerWidth
         this.innerHeight = window.innerHeight
         this.container = document.getElementById( 'canvas' )
@@ -72,6 +73,8 @@ class Equalizr {
         this.camera.position.z = this.guiControls.positionZ
 
         this.renderer.render( this.scene, this.camera )
+
+        console.log( this.soundData.freq )
 
         requestAnimationFrame( this.animate.bind(this) )
     }
