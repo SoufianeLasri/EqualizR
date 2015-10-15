@@ -6,7 +6,7 @@ export default class Stroke extends THREE.Object3D {
         super()
 
         this.objectResolution = 0
-        this.radius = 40
+        this.radius = 60
         this.color = color
         this.wavesAmount = wavesAmount
         this.wavesHeight = wavesHeight * this.radius
@@ -17,7 +17,7 @@ export default class Stroke extends THREE.Object3D {
 
         this.geometry = new THREE.Geometry()
 
-        this.countVertices = 360
+        this.countVertices = 5000
         this.vertices = []
 
         for( let i = 0; i < this.countVertices; i++ ) {
@@ -81,9 +81,12 @@ export default class Stroke extends THREE.Object3D {
         }
 
         this.geometry.verticesNeedUpdate = true
+        this.geometry.computeBoundingSphere()
 
         if ( this.counter < this.objectResolution ) {
             this.counter++
+            this.radius -= 0.02
+            this.linewidth -= 0.01
         }
     }
 }

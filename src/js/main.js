@@ -52,6 +52,7 @@ class Equalizr {
         this.effect.uniforms.sIntensity.value = this.guiControls.sIntensity
         this.effect.uniforms.sCount.value = this.guiControls.sCount
         this.effect.uniforms.grayscale.value = this.guiControls.grayscale
+        // this.effect.renderToScreen = true
         this.composer.addPass( this.effect )
 
         this.effect1 = new EffectComposer.ShaderPass( THREE.RGBShiftShader )
@@ -74,12 +75,15 @@ class Equalizr {
     createScene( duration ) {
         this.stroke1 = new Stroke( 7, 0.05, 7, new THREE.Vector4( 0.17, 0.59, 0.87, 1 ) )
         this.scene.add( this.stroke1 )
+        this.to1 = this.stroke1.wavesHeight
 
         this.stroke2 = new Stroke( 4, 0.1, 4, new THREE.Vector4( 0.91, 0.29, 0.21, 1 ) )
         this.scene.add( this.stroke2 )
+        this.to2 = this.stroke2.wavesHeight
 
-        this.stroke3 = new Stroke( 2, 0.003, 8, new THREE.Vector4( 0.12, 0.29, 0.21, 1 ) )
+        this.stroke3 = new Stroke( 2, 0.03, 6, new THREE.Vector4( 0.12, 0.29, 0.21, 1 ) )
         this.scene.add( this.stroke3 )
+        this.to3 = this.stroke3.wavesHeight
     }
 
     initGUI() {
@@ -91,7 +95,7 @@ class Equalizr {
             nIntensity: 10.0,
             sIntensity: 0.65,
             sCount: 4096,
-            grayscale: 0.9
+            grayscale: 0
         }
 
         const datGUI = new dat.GUI()
@@ -112,7 +116,7 @@ class Equalizr {
     render() {
         const time = Date.now() - this.tick
 
-        if ( ( time / 1000 ) > ( this.sound.duration / 360 ) ) {
+        if ( ( time / 1000 ) > ( this.sound.duration / 5000 ) ) {
             this.stroke1.update()
             this.stroke2.update()
             this.stroke3.update()
@@ -127,14 +131,6 @@ class Equalizr {
 
         // this.camera.lookAt( this.stroke1.vertices[ this.stroke1.counter ] )
 
-        const change = this.clock.getDelta()
-        this.effect.uniforms.time.value = change * 100
-        this.effect.uniforms.nIntensity.value = this.guiControls.nIntensity
-        this.effect.uniforms.sIntensity.value = this.guiControls.sIntensity
-        this.effect.uniforms.sCount.value = this.guiControls.sCount
-        this.effect.uniforms.grayscale.value = this.guiControls.grayscale
-        this.composer.render()
-
         let sum = 0
         for ( let i = 0; i < this.sound.getData().time.length; i++ ) {
             sum += this.sound.getData().time[ i ]
@@ -142,10 +138,27 @@ class Equalizr {
 
         const averageTime = sum / this.sound.getData().time.length
 
+        this.to1 = averageTime / 100
+        this.stroke1.wavesHeight += ( this.to1 - this.stroke1.wavesHeight ) * .4
+
+        this.to2 = averageTime / 50
+        this.stroke2.wavesHeight += ( this.to2 - this.stroke2.wavesHeight ) * .4
+
+        this.to3 = averageTime / 30
+        this.stroke3.wavesHeight += ( this.to3 - this.stroke3.wavesHeight ) * .4
+
         // Tween.to( this.stroke1, 0.5,
         // { wavesHeight: averageTime / 30 } )
 
         this.renderer.render( this.scene, this.camera )
+
+        const change = this.clock.getDelta()
+        this.effect.uniforms.time.value = change * 100
+        this.effect.uniforms.nIntensity.value = this.guiControls.nIntensity
+        this.effect.uniforms.sIntensity.value = this.guiControls.sIntensity
+        this.effect.uniforms.sCount.value = this.guiControls.sCount
+        this.effect.uniforms.grayscale.value = this.guiControls.grayscale
+        // this.composer.render()
         requestAnimationFrame( this.animate.bind( this ) )
     }
 
