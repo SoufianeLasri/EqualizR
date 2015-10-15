@@ -127,7 +127,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: FONTS_DIR,
-                        src: [ '*.*' ],
+                        src: [ '**/*.*' ],
                         dest: ASSETS_DIR + '/fonts'
                     }]
                 },
@@ -182,7 +182,7 @@ module.exports = function(grunt) {
 
                 fonts:
                 {
-                    files: [ FONTS_DIR + '*.*' ],
+                    files: [ FONTS_DIR + '**/*.*' ],
                     tasks: [ 'copy:fonts' ]
                 },
 
