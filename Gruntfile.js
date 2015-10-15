@@ -24,7 +24,7 @@ module.exports = function(grunt) {
             {
                 dev:
                 {
-                    src : [
+                    src: [
                         'dist/index.html',
                         'dist/assets/css/*.css',
                         'dist/assets/js/*.js'
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                         'tmp/main.js': JAVASCRIPT_DIR + 'main.js',
                     },
                     options: {
-                        transform: [ 'babelify' ]
+                        transform: [ 'babelify', 'glslify' ]
                     }
                 },
 
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                         'dist/assets/js/main.js': JAVASCRIPT_DIR + 'main.js',
                     },
                     options: {
-                        transform: [ 'babelify' ]
+                        transform: [ 'babelify', 'glslify' ]
                     }
                 }
             },
@@ -121,17 +121,6 @@ module.exports = function(grunt) {
                     }]
                 },
 
-                models:
-                {
-                    files: [
-                    {
-                        expand: true,
-                        cwd: JAVASCRIPT_DIR + 'models',
-                        src: [ '**/*.js', '**/*.json' ],
-                        dest: ASSETS_DIR + '/js/models'
-                    }]
-                },
-
                 fonts:
                 {
                     files: [
@@ -169,14 +158,13 @@ module.exports = function(grunt) {
 
             watch:
             {
-                options:
-                {
-                    livereload: true,
-                },
-
                 js:
                 {
-                    files: [ JAVASCRIPT_DIR + '**/*.js' ],
+                    files: [
+                        JAVASCRIPT_DIR + '**/*.js',
+                        JAVASCRIPT_DIR + '**/*.glsl',
+                        !JAVASCRIPT_DIR + 'main.js'
+                    ],
                     tasks: [ 'browserify:dev' ]
                 },
 
@@ -184,12 +172,6 @@ module.exports = function(grunt) {
                 {
                     files: [ CSS_DIR + 'vendors/**/*.css' ],
                     tasks: [ 'copy:vendors_css' ]
-                },
-
-                models:
-                {
-                    files: [ JAVASCRIPT_DIR + 'models/**/*.js', JAVASCRIPT_DIR + 'models/**/*.json' ],
-                    tasks: [ 'copy:models', 'browserify:dev' ]
                 },
 
                 stylus:
@@ -222,7 +204,6 @@ module.exports = function(grunt) {
                     tasks: [ 'jade' ]
                 }
             }
-
         });
 
     grunt.registerTask('default', [
