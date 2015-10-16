@@ -11,32 +11,25 @@ canvas
 body
     background #2c3e50
 
-h1.title,
-button.start
+h1.title
     font-family 'Brandon'
     font-weight 600
     font-size 10vh
     color #ffffff
     text-transform uppercase
     position absolute
-    top 40vh
+    top 50vh
     left 50%
     transform translate( -50%, -30% )
-    z-index 1
+    z-index 2
+    margin 0
+
+    cursor pointer
+
     opacity 0
-    transition all 1s cubic-bezier( 0.250, 0.460, 0.450, 0.940 ) // easeOutQuad
-
-    &.show
-        opacity 1
-        transform translate( -50%, -50% )
-
-button.start
-    font-weight 300
-    font-size 2vh
-    top 55vh
-    border none
-    background none
-    outline none
+    visibilty hidden
+    transition opacity 0.5s cubic-bezier( 0.250, 0.460, 0.450, 0.940 ) 0.3s, // easeOutQuad
+               transform 0.5s cubic-bezier( 0.250, 0.460, 0.450, 0.940 ) 0.3s // easeOutQuad
 
     &:after
         position absolute
@@ -50,6 +43,33 @@ button.start
         transform translateX( -50% )
         transition width 0.3s cubic-bezier( 0.250, 0.460, 0.450, 0.940 ) // easeOutQuad
 
-    &:hover
-        &:after
+    &.show
+        opacity 1
+        visibilty visible
+        transform translate( -50%, -50% )
+
+        &:hover:after
             width 100%
+
+p.end
+    font-family 'Brandon'
+    font-weight 600
+    font-size 10vh
+    color #ffffff
+    text-transform uppercase
+    position absolute
+    top 50vh
+    left 50%
+    transform translate( -50%, -30% )
+    z-index 1
+    margin 0
+
+    opacity 0
+    visibilty hidden
+    transition all 0.5s cubic-bezier( 0.250, 0.460, 0.450, 0.940 ) // easeOutQuad
+
+    &.show
+        opacity 1
+        visibilty visible
+        transform translate( -50%, -50% )
+

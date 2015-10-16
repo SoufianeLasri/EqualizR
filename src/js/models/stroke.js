@@ -2,14 +2,16 @@ import THREE from 'three'
 const glslify = require( 'glslify' )
 
 export default class Stroke extends THREE.Object3D {
-    constructor( lineWidth, wavesHeight, wavesAmount, color ) {
+    constructor( zPosition, lineWidth, wavesHeight, wavesAmount, color ) {
         super()
 
         this.objectResolution = 0
         this.radius = 100
         this.color = color
+        this.zPosition = zPosition
         this.wavesAmount = wavesAmount
         this.wavesHeight = wavesHeight * this.radius
+        this.soundFreq = 0
 
         this.counter = 0
         this.speedIncrementer = this.counter
@@ -20,7 +22,7 @@ export default class Stroke extends THREE.Object3D {
         this.countVertices = 5000
         this.vertices = []
 
-        for( let i = 0; i < this.countVertices; i++ ) {
+        for ( let i = 0; i < this.countVertices; i++ ) {
             this.vertices.push( new THREE.Vector3() )
         }
 
@@ -50,11 +52,12 @@ export default class Stroke extends THREE.Object3D {
 
     update() {
         const angle = Math.PI / 180 * this.counter
-        const radiusAddon = this.wavesHeight * this.smoothPourcent * Math.sin( ( angle + this.counter / 100 ) * this.wavesAmount )
+        const radiusAddon = ( this.wavesHeight * this.smoothPourcent * Math.sin( ( angle + this.counter / 100 ) * this.wavesAmount ) ) * this.soundFreq
+        this.zPosition -= 0.001
 
-        const x = ( this.radius + radiusAddon ) * Math.cos( angle )
-        const y = ( this.radius + radiusAddon ) * Math.sin( angle )
-        const z = 0
+        const x = ( this.radius + radiusAddon ) * Math.cos( angle ) * 0.1
+        const y = ( this.radius + radiusAddon ) * Math.sin( angle ) * 0.1
+        const z = this.zPosition
 
         let vertice = this.vertices[ this.counter ]
         vertice.x = x
@@ -70,12 +73,6 @@ export default class Stroke extends THREE.Object3D {
 
         if ( this.objectResolution < this.countVertices - 1 ) {
             this.objectResolution++
-        } else {
-            const v = this.vertices[ 0 ]
-            vertice = this.vertices[ this.countVertices - 1 ]
-            vertice.x = v.x
-            vertice.y = v.y
-            vertice.z = v.z
         }
 
         this.geometry.verticesNeedUpdate = true
@@ -84,7 +81,26 @@ export default class Stroke extends THREE.Object3D {
         if ( this.counter < this.objectResolution ) {
             this.counter++
             this.radius -= 0.02
-            this.linewidth -= 0.01
+        }
+    }
+
+    drawLine( lineMaterial, x1, y1, z1, x2, y2, z2, thickness ) {
+        for ( let i = 0; i < thickness * 2; i++ ) {
+            const routerLine1Geometry = new THREE.Geometry()
+            routerLine1Geometry.vertices.push( new THREE.Vector3( x1, y1 + i / 4, z1 ) )
+            routerLine1Geometry.vertices.push( new THREE.Vector3( x2, y2 + i / 4, z2 ) )
+            const routerLine1 = new THREE.Line( routerLine1Geometry, lineMaterial )
+
+            this.add( routerLine1 )
+        }
+
+        for ( let i = 0; i < thickness * 2; i++ ) {
+            const routerLine1Geometry = new THREE.Geometry()
+            routerLine1Geometry.vertices.push( new THREE.Vector3(x1, y1 - i / 4, z1 ) )
+            routerLine1Geometry.vertices.push( new THREE.Vector3(x2, y2 - i / 4, z2 ) )
+            const routerLine1 = new THREE.Line( routerLine1Geometry, lineMaterial )
+
+            this.add( routerLine1 )
         }
     }
 }
