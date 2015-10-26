@@ -1,9 +1,9 @@
 import dat from 'dat-gui'
 import THREE from 'three'
-import sound from './sound/sound'
+import sound from './sound/Sound'
 import domready from 'domready'
-import Stroke from './models/stroke'
-import CustomCamera from './camera/customCamera'
+import Stroke from './models/Stroke'
+import CustomCamera from './camera/CustomCamera'
 
 const EffectComposer = require( 'three-effectcomposer' )( THREE )
 const VignetteShader = require( './shaders/VignetteShader.js' )

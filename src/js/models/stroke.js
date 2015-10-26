@@ -83,24 +83,4 @@ export default class Stroke extends THREE.Object3D {
             this.radius -= 0.02
         }
     }
-
-    drawLine( lineMaterial, x1, y1, z1, x2, y2, z2, thickness ) {
-        for ( let i = 0; i < thickness * 2; i++ ) {
-            const routerLine1Geometry = new THREE.Geometry()
-            routerLine1Geometry.vertices.push( new THREE.Vector3( x1, y1 + i / 4, z1 ) )
-            routerLine1Geometry.vertices.push( new THREE.Vector3( x2, y2 + i / 4, z2 ) )
-            const routerLine1 = new THREE.Line( routerLine1Geometry, lineMaterial )
-
-            this.add( routerLine1 )
-        }
-
-        for ( let i = 0; i < thickness * 2; i++ ) {
-            const routerLine1Geometry = new THREE.Geometry()
-            routerLine1Geometry.vertices.push( new THREE.Vector3(x1, y1 - i / 4, z1 ) )
-            routerLine1Geometry.vertices.push( new THREE.Vector3(x2, y2 - i / 4, z2 ) )
-            const routerLine1 = new THREE.Line( routerLine1Geometry, lineMaterial )
-
-            this.add( routerLine1 )
-        }
-    }
 }
