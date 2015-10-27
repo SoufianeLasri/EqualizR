@@ -30,7 +30,7 @@ class Equalizr {
     init() {
         this.scene = new THREE.Scene()
 
-        this.camera = new CustomCamera( 90, this.innerWidth / this.innerHeight, 1, 100 )
+        this.camera = new CustomCamera( 50, this.innerWidth / this.innerHeight, 1, 100 )
         this.camera.position.set( 0, 0, 12 )
         this.camera.lookAt( new THREE.Vector3( 0, 0, 0 ) )
 
@@ -94,13 +94,19 @@ class Equalizr {
                 this.camera.setFollowLines()
                 break
             case 27:
-                this.camera.setPan()
+                if ( !this.camera.isSwitching ) {
+                    this.camera.setPan()
+                }
                 break
             case 40:
-                this.camera.setZoomOut()
+                if ( !this.camera.isSwitching ) {
+                    this.camera.setZoomOut()
+                }
                 break
             case 65:
-                this.camera.setTravelling()
+                if ( !this.camera.isSwitching ) {
+                    this.camera.setTravelling()
+                }
                 break
             case 100:
                 // TODO : Stop request animation frame

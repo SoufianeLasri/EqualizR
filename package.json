@@ -28,7 +28,7 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "load-grunt-tasks": "^1.0.0",
-    "three": "^0.72.0"
+    "three": "^0.73.0"
   },
   "dependencies": {
     "domready": "^1.0.8",

@@ -5,35 +5,45 @@ export default class CustomCamera extends THREE.PerspectiveCamera {
         super()
 
         this.mode = 'followLines'
-    }
-
-    setZoomOut() {
-        this.mode = 'zoomOut'
-        this.position.set( 0, 0, 9 )
-        this.rotation.set( 0, 0, 0 )
-    }
-
-    setFlyOver() {
-        this.mode = 'flyOver'
-        this.position.set( 0, 0, 25)
+        this.isSwitching = false
     }
 
     setFollowLines() {
         this.mode = 'followLines'
-        this.position.set( 0, 0, 20 )
+        this.isSwitching = true
+        this.position.set( 0, 0, 0 )
         this.rotation.set( 0, 0, 0 )
+        this.resetSwitching()
     }
 
     setPan() {
         this.mode = 'pan'
-        this.position.set( 0, 0, 30 )
-        this.rotation.set( 0, Math.PI / 6, 0 )
+        this.isSwitching = true
+        this.position.set( 0, 0, 20 )
+        this.rotation.set( 0, Math.PI / 4, 0 )
+        this.resetSwitching()
+    }
+
+    setZoomOut() {
+        this.mode = 'zoomOut'
+        this.isSwitching = true
+        this.position.set( 0, 0, 10 )
+        this.rotation.set( 0, 0, 0 )
+        this.resetSwitching()
     }
 
     setTravelling() {
         this.mode = 'travelling'
+        this.isSwitching = true
         this.position.set( 0, 20, 20 )
         this.rotation.set( 0, 0, 0 )
+        this.resetSwitching()
+    }
+
+    resetSwitching() {
+        setTimeout( () => {
+            this.isSwitching = false
+        }, 5000 )
     }
 
     update( linesPositionX, linesPositionY, linesRotationZ ) {
